@@ -1,0 +1,84 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2639
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fmodern\fcharset0 CourierNewPSMT;\f2\fmodern\fcharset0 CourierNewPS-BoldMT;
+\f3\fmodern\fcharset0 CourierNewPS-BoldItalicMT;\f4\fmodern\fcharset0 CourierNewPS-ItalicMT;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue128;\red102\green14\blue122;\red0\green0\blue255;
+\red0\green128\blue0;\red128\green128\blue0;\red128\green128\blue128;\red0\green115\blue191;}
+{\*\expandedcolortbl;;\csgenericrgb\c0\c0\c50196;\csgenericrgb\c40000\c5490\c47843;\csgenericrgb\c0\c0\c100000;
+\csgenericrgb\c0\c50196\c0;\csgenericrgb\c50196\c50196\c0;\csgenericrgb\c50196\c50196\c50196;\csgenericrgb\c0\c45098\c74902;}
+\paperw11900\paperh16840\vieww12000\viewh15840\viewkind0
+\deftab720
+\pard\pardeftab720\sl276\slmult1\sa200\partightenfactor0
+
+\f0\fs24 \cf0 In versions more than the M, android asks for location permision.\
+With that, we need to put a new permission on Android manifest:\
+\pard\pardeftab720\sl276\slmult1\sa200\partightenfactor0
+
+\f1\fs34 \cf0 <
+\f2\b \cf2 uses-permission \cf3 android\cf4 :name=\cf5 "android.permission.ACCESS_COARSE_LOCATION" 
+\f1\b0 \cf0 />\uc0\u8232 \
+\pard\pardeftab720\sl276\slmult1\sa200\partightenfactor0
+
+\f0\fs24 \cf0 \
+And also before  we use the Bluetooth we need to asks the user for permission with:\
+\pard\pardeftab720\sl276\slmult1\sa200\partightenfactor0
+
+\f2\b\fs34 \cf2 if
+\f1\b0 \cf0 (Build.VERSION.
+\f3\i\b \cf3 SDK_INT
+\f1\i0\b0 \cf0 >= Build.VERSION_CODES.
+\f3\i\b \cf3 M
+\f1\i0\b0 \cf0 )\uc0\u8232     requestPermissions(
+\f2\b \cf2 new 
+\f1\b0 \cf0 String[]\{Manifest.permission.
+\f3\i\b \cf3 ACCESS_FINE_LOCATION
+\f1\i0\b0 \cf0 \},\cf4 1001\cf0 );\uc0\u8232 \u8232 And also a callback when the user grants the permission.\
+\
+\pard\pardeftab720\sl276\slmult1\sa200\partightenfactor0
+\cf6 @Override\uc0\u8232 
+\f2\b \cf2 public void 
+\f1\b0 \cf0 onRequestPermissionsResult(
+\f2\b \cf2 int 
+\f1\b0 \cf0 requestCode,\uc0\u8232                                        String permissions[], 
+\f2\b \cf2 int
+\f1\b0 \cf0 [] grantResults) \{\uc0\u8232     
+\f2\b \cf2 switch 
+\f1\b0 \cf0 (requestCode) \{\uc0\u8232         
+\f2\b \cf2 case 
+\f1\b0 \cf4 1001\cf0 : \{\uc0\u8232             
+\f2\b \cf2 if 
+\f1\b0 \cf0 (grantResults.
+\f2\b \cf3 length 
+\f1\b0 \cf0 > \cf4 0\uc0\u8232                     \cf0 && grantResults[\cf4 0\cf0 ] == PackageManager.
+\f3\i\b \cf3 PERMISSION_GRANTED
+\f1\i0\b0 \cf0 ) \{\uc0\u8232                 
+\f4\i \cf7 // --->\uc0\u8232                 
+\f1\i0 \cf0 Log.
+\f4\i d
+\f1\i0 (
+\f2\b \cf5 "BT"
+\f1\b0 \cf0 , 
+\f2\b \cf5 "permisionGranted"
+\f1\b0 \cf0 );\uc0\u8232             \} 
+\f2\b \cf2 else 
+\f1\b0 \cf0 \{\uc0\u8232                 
+\f4\i \cf7 //
+\f3\b \cf8 TODO re-request\uc0\u8232                 
+\f1\i0\b0 \cf0 Log.
+\f4\i d
+\f1\i0 (
+\f2\b \cf5 "BT"
+\f1\b0 \cf0 , 
+\f2\b \cf5 "permisionNOTGranted"
+\f1\b0 \cf0 );\uc0\u8232                 requestPermissions(
+\f2\b \cf2 new 
+\f1\b0 \cf0 String[]\{Manifest.permission.
+\f2\b \cf5 ACCESS_COARSE_LOCATION
+\f1\b0 \cf0 \}, \cf4 1001\cf0 );\uc0\u8232 \u8232             \}\u8232             
+\f2\b \cf2 break
+\f1\b0 \cf0 ;\uc0\u8232         \}\u8232     \}\u8232 \}\
+\
+\pard\pardeftab720\sl276\slmult1\sa200\partightenfactor0
+
+\f0\fs24 \cf0 \
+\
+}
